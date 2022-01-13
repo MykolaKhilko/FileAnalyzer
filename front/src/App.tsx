@@ -1,10 +1,14 @@
 import React from 'react';
-import Autocomplete from '@mui/material/Autocomplete';
+
+const createProcess = (newProcess) => {
+    setProcess([...process, newProcess])
+    setModal(false)
+}
 
 function App() {
   return (
     <div className="App">
-      <Autocomplete renderInput={} options={}></Autocomplete>
+        <button className="newProcess" onClick={create}></button>
     </div>
   );
 }
