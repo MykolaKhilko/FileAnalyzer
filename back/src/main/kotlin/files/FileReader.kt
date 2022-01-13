@@ -1,15 +1,16 @@
 package files
 
 import java.io.File
+import java.util.*
 import kotlin.math.min
 
 object FileReader {
     object Constants{
         const val delimiters = " .,?!"
     }
+    val wordInfos: Queue<WordInfo> = LinkedList()
 
-    fun processFile(file: File, keywords: List<String>): FileInfo {
-        val result = mutableListOf<WordInfo>()
+    fun processFile(file: File, keywords: List<String>){
         file.bufferedReader().useLines {
             it.forEachIndexed{ lineIndex, line ->
                 val text = line.split(' ')
@@ -18,13 +19,11 @@ object FileReader {
                     keywords.forEachIndexed { index, keyword ->
                         if (word.contains(keyword)) {
                             val contexts = text.subList(indexText - min(2, indexText), indexText + min(3, text.size - indexText)).toString()
-                            result.add(WordInfo(lineIndex, indexText, word, contexts))
+                            wordInfos.add(WordInfo(lineIndex, indexText, word, contexts))
                         }
                     }
                 }
             }
         }
-
-        return FileInfo(file.name, file.absolutePath, result)
     }
 }
