@@ -1,35 +1,19 @@
 import React from 'react';
-import ProcessItem from "./ProcessItem";
-import {TransitionGroup, CSSTransition} from "react-transition-group";
+import {Process} from "../Types";
+import {List} from "@mui/material";
+import {ProcessItem} from "./ProcessItem";
 
-const PostList = ({posts, title, remove}) => {
+interface Props {
+    processes: Process[]
+}
 
-    if (!posts.length) {
-        return (
-            <h1 style={{textAlign: 'center'}}>
-                Посты не найдены!
-            </h1>
-        )
-    }
-
+export function ProcessList(props: Props) {
     return (
-        <div>
-            <h1 style={{textAlign: 'center'}}>
-                {title}
-            </h1>
-            <TransitionGroup>
-                {posts.map((process : ProcessItem, index) =>
-                    <CSSTransition
-                        key={post.id}
-                        timeout={500}
-                        classNames="post"
-                    >
-                        <ProcessItem remove={remove} number={index + 1} process={process} />
-                    </CSSTransition>
-                )}
-            </TransitionGroup>
-        </div>
+        <List>
+            {props.processes.map((item, index) => {
+                return <ProcessItem key={index} process={item}/>
+            })}
+        </List>
     );
-};
+}
 
-export default PostList;

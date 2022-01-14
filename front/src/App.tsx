@@ -1,16 +1,13 @@
 import React from 'react';
+import Layout from "./components/Layout";
 
-const createProcess = (newProcess) => {
-    setProcess([...process, newProcess])
-    setModal(false)
-}
 
 function App() {
-  return (
-    <div className="App">
-        <button className="newProcess" onClick={create}></button>
-    </div>
-  );
+    return (
+        <div className="App">
+            <Layout/>
+        </div>
+    );
 }
 
 export default App;
