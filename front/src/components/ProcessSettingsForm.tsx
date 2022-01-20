@@ -2,10 +2,20 @@ import React, {useState} from "react";
 import {TextField, Button} from "@mui/material";
 import MultiSelect from "./MultiSelect";
 import {Process} from "../Types";
+import {Div, GeneralButton, MainButton, useStyles} from "../styles/Styles";
 
 
-export function ProcessSettingsForm({create}: { create: (process: Process) => void }) {
+interface Props {
+    onCreate(process: Process): void
+}
+
+export function ProcessSettingsForm(props: Props) {
     const [settings, setProcess] = useState<Process>({path: '', names: '', extensions: '', keywords: '', id: 0})
+    const [visibility, setVisibility] = useState(false)
+
+    const makeVisible = () => setVisibility(true)
+
+    const hide = () => setVisibility(false)
 
     const addNewProcess = () => {
 
@@ -13,18 +23,26 @@ export function ProcessSettingsForm({create}: { create: (process: Process) => vo
             ...settings,
             id: Date.now()
         }
-        create(newProcess)
         setProcess(newProcess)
+        props.onCreate(newProcess)
     }
 
+
+    const classes = useStyles();
+
     return (
-        <>
-            <TextField id="outlined-textarea" label="Path to directory or file">{settings.path}</TextField>
-            <MultiSelect label="Names of files" opts={[]} onChange={(item: readonly string[]) => console.log(item)}/>
-            <MultiSelect label="Extensions of files" opts={[".txt"]}
-                         onChange={(item: readonly string[]) => console.log(item)}/>
-            <MultiSelect label="Search keywords" opts={[]} onChange={(item: readonly string[]) => console.log(item)}/>
-            <Button variant="contained" onClick={addNewProcess}>START</Button>
-        </>
+        visibility
+            ?
+            <Div>
+                <TextField className={classes.input} id="outlined-textarea" label="Path to directory or file">{settings.path}</TextField>
+                <MultiSelect className={classes.input} label="Names of files" options={[]} onChange={(item: readonly string[]) => console.log(item)}/>
+                <MultiSelect className={classes.input} label="Extensions of files" options={[".txt"]}
+                             onChange={(item: readonly string[]) => console.log(item)}/>
+                <MultiSelect className={classes.input} label="Search keywords" options={[]} onChange={(item: readonly string[]) => console.log(item)}/>
+                <MainButton onClick={addNewProcess}>Start</MainButton>
+                <GeneralButton onClick={hide}>Close</GeneralButton>
+            </Div>
+            : <MainButton onClick={makeVisible}>Add process</MainButton>
+
     )
 }

@@ -8,9 +8,10 @@ object FileReader {
     object Constants{
         const val delimiters = " .,?!"
     }
-    val wordInfos: Queue<WordInfo> = LinkedList()
 
-    fun processFile(file: File, keywords: List<String>){
+    fun processFile(file: File, keywords: List<String>, onKeywordFound: (WordInfo) -> Unit) : FileInfo{
+        val wordInfos: List<WordInfo> = mutableListOf()
+
         file.bufferedReader().useLines {
             it.forEachIndexed{ lineIndex, line ->
                 val text = line.split(' ')
@@ -19,11 +20,12 @@ object FileReader {
                     keywords.forEachIndexed { index, keyword ->
                         if (word.contains(keyword)) {
                             val contexts = text.subList(indexText - min(2, indexText), indexText + min(3, text.size - indexText)).toString()
-                            wordInfos.add(WordInfo(lineIndex, indexText, word, contexts))
+                            onKeywordFound(WordInfo(lineIndex, indexText, word, contexts))
                         }
                     }
                 }
             }
         }
+        return FileInfo(file.name, file.absolutePath, wordInfos)
     }
 }

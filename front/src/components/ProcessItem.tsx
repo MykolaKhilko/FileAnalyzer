@@ -1,20 +1,15 @@
 import React from 'react';
-import {Button} from "@mui/material";
 import {Process} from "../Types";
 
+interface Props {
+    process: Process
+}
 
-export function ProcessItem({process}: { process: Process }) {
+export function ProcessItem(props: Props) {
 
     return (
         <div>
-            <div>
 
-            </div>
-            <div>
-                <Button>
-                    START
-                </Button>
-            </div>
         </div>
     );
 }

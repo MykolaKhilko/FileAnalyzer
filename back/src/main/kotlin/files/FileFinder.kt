@@ -4,9 +4,16 @@ import java.io.File
 
 class FileFinder {
 
+    val WordInfos = mutableListOf<WordInfo>()
+    var KeyWordsMap = mutableMapOf<String, Int>()
+
     fun processDirectory(dirPath: String, keywords: List<String>) : List<FileInfo>{
         val files = walkDirectory(dirPath)
-        return files.map { FileReader.processFile(it, keywords) }.toList()
+        return files.map {
+            FileReader.processFile(it, keywords) { info ->
+                KeyWordsMap.compute(info.match) { _, oldValue -> oldValue?.plus(1) ?: 1 }
+            }
+        }.toList()
     }
 
     fun walkDirectory(dirPath: String, pattern: Regex): List<File> {

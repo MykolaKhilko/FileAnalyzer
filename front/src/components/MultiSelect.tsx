@@ -1,17 +1,17 @@
 import {Autocomplete, Chip, TextField} from "@mui/material";
 
-interface MultiSelectProps {
+interface Props {
+    className: string;
     label: string;
-    opts: string[];
+    options: string[];
     onChange: (values: readonly string[]) => void;
 }
 
-export default function MultiSelect({label, opts, onChange}: MultiSelectProps) {
+export default function MultiSelect({onChange, label, ...rest}: Props) {
     return (
         <Autocomplete
             multiple
             id="tags-outlined"
-            options={opts}
             freeSolo
             renderTags={(value: readonly string[], getTagProps) => {
                     onChange(value)
@@ -27,5 +27,6 @@ export default function MultiSelect({label, opts, onChange}: MultiSelectProps) {
                     label={label}
                 />
             )}
+            {...rest}
         />)
 }
