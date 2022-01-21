@@ -5,3 +5,9 @@ export interface Process {
     keywords: string,
     id: number
 }
+
+export interface ProcessProgress{
+    percentage: number,
+    done: string,
+    speed: string
+}

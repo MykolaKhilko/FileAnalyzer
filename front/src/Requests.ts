@@ -45,6 +45,9 @@ async function fetchUrlWithBody<TBody = any, TResponse = any>(url: string, body:
 
     const response = await fetch(url, {
         method: httpMethod,
+        headers: {
+            "Content-Type": "application/json",
+        },
         body: JSON.stringify(body),
     });
 
