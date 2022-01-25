@@ -1,21 +1,16 @@
 package com.example.plugins
 
-import com.google.gson.JsonDeserializer
-import com.google.gson.JsonElement
 import files.FileFinder
 import io.ktor.routing.*
 import io.ktor.http.*
 import io.ktor.application.*
 import io.ktor.response.*
 import io.ktor.request.*
-
-data class ProcessSettings(val path: String,
-                           val names: String?,
-                           val extensions: String?,
-                           val keywords: String,
-                           val id: Long)
+import process.ProcessWorker
+import process.ProcessSettings
 
 fun Application.configureRouting() {
+    val workers = mutableMapOf<Long, ProcessWorker>()
 
     routing {
         get("/api") {
@@ -23,11 +18,30 @@ fun Application.configureRouting() {
         }
         get("/api/ProcessDirectoryTest"){
             val keys = listOf("Cthulhu", "truth", "death", "mad")
-            FileFinder().processDirectory("C:\\Users\\Atolanin\\Desktop\\TestFileAnalyzer", keys)
+            val path = "C:\\Users\\Atolanin\\Desktop\\TestFileAnalyzer"
+            val settings = ProcessSettings(path, null, null, keys, 1)
+
+            val worker = ProcessWorker(settings)
+            worker.startNewProcess()
         }
         post<ProcessSettings>("/api/start-process") { settings ->
-            FileFinder().processDirectory(settings.path, settings.keywords.chunked(10))
-            call.respond(HttpStatusCode.OK)
+            val worker = ProcessWorker(settings)
+
+            val validationResult = worker.validateSettings()
+            if (validationResult.isEmpty())
+                call.respond(HttpStatusCode.OK)
+            else
+                call.respond(HttpStatusCode.BadRequest, validationResult)
+
+            workers[settings.id] = worker
+
+            worker.startNewProcess()
+        }
+        get("/api/fetch-progress"){
+            val id = call.request.queryParameters["id"]!!.toLong()
+            val worker = workers.getValue(id)
+
+            call.respond(worker.getProgress())
         }
     }
 }
