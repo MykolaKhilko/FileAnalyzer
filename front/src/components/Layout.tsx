@@ -5,6 +5,7 @@ import {ProcessSettingsForm} from "./ProcessSettingsForm";
 import {get, post} from "../Requests";
 import {Div, MainButton} from "../styles/Styles";
 import {ProcessItem} from "./ProcessItem";
+import {Box, CircularProgress} from "@mui/material";
 
 export default function Layout() {
 
@@ -12,9 +13,11 @@ export default function Layout() {
     const [processItem, setProcessItem] = useState<ProcessProgress>()
     const [activeProcess, setNew] = useState<Process>()
     const [startedNew, setStart] = useState(false)
+    const [loading, setLoading] = useState(true)
 
     function handleProcessCreated(item: Process) {
         const url = "start-process"
+        setLoading(true)
 
         post(url, item).then(response => {
                 if (response.status == 200) {
@@ -36,6 +39,11 @@ export default function Layout() {
     return (
         <Div>
             <ProcessSettingsForm onCreate={handleProcessCreated}/>
+            {loading == true ??
+                <Box sx={{ display: 'flex' }}>
+                    <CircularProgress />
+                </Box>
+            }
             <MainButton onClick={handleOnClick}>Test</MainButton>
             {startedNew == true ??
                 <ProcessItem process={activeProcess!!}/>

@@ -5,16 +5,6 @@ import {createStyles, makeStyles} from "@mui/styles";
 
 export const useStyles = makeStyles((theme: Theme) =>
     createStyles({
-        mainButton: {
-            display: 'block',
-            background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
-            margin: 5,
-            border: 0,
-            borderRadius: 3,
-            boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
-            color: 'white',
-            height: 48,
-        },
         root:{
             display: "flex",
             alignItems: "center",
@@ -31,23 +21,23 @@ export const useStyles = makeStyles((theme: Theme) =>
             margin: 20,
             padding: 20,
         },
-        generalButton: {
-            display: 'block',
-            color: 'white',
-            border: 2,
-            margin: 100,
-        },
     }),
 );
 
 export const MainButton = (props: ButtonProps) => {
-    const styles = useStyles()
-    return <Button className={styles.mainButton} {...props}/>
+    return <Button sx={theme => ({
+        background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+        margin: 1,
+        border: 0,
+        borderRadius: 2,
+        boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+        color: "white",
+        height: 48,
+    })} {...props}/>
 }
 
 export const GeneralButton = (props: ButtonProps) => {
-    const styles = useStyles()
-    return <Button className={styles.generalButton} {...props}/>
+    return <Button {...props} sx={{color: 'white'}}/>
 }
 
 export const Div = (props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>) => {

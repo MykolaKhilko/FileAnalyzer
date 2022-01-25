@@ -1,22 +1,27 @@
-import {Autocomplete, Chip, TextField} from "@mui/material";
+import {Autocomplete, AutocompleteProps, Chip, TextField} from "@mui/material";
+import * as React from "react";
+import {AutocompleteValue} from "@mui/base/AutocompleteUnstyled/useAutocomplete";
 
 interface Props {
-    className: string;
     label: string;
-    options: string[];
-    onChange: (values: readonly string[]) => void;
+    values: string[];
+    onChange: (values: string[]) => void;
+    options?: string[];
 }
 
-export default function MultiSelect({onChange, label, ...rest}: Props) {
+export default function MultiSelect({onChange, label, values, options}: Props) {
     return (
         <Autocomplete
             multiple
             id="tags-outlined"
             freeSolo
-            renderTags={(value: readonly string[], getTagProps) => {
-                    onChange(value)
+            value={values}
+            onChange={(_, value) => onChange(value)}
+            renderTags={(value: string[], getTagProps) => {
                     return value.map((option: string, index: number) => (
-                        <Chip variant="outlined" label={option} {...getTagProps({index})} />
+                        <Chip variant="outlined" label={option} {...getTagProps({index})} sx={{
+                            color: "white"
+                        }}/>
                     ))
                 }
             }
@@ -25,8 +30,11 @@ export default function MultiSelect({onChange, label, ...rest}: Props) {
                     {...params}
                     variant="standard"
                     label={label}
+                    sx={{
+                        color: "white",
+                    }}
                 />
             )}
-            {...rest}
+            options={options ?? []}
         />)
 }

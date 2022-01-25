@@ -1,44 +1,66 @@
-import React, {useState} from "react";
-import {TextField, Button} from "@mui/material";
+import React, {ChangeEvent, useState} from "react";
+import {Button, Autocomplete, Theme, ButtonProps, TextFieldProps, TextField} from "@mui/material";
 import MultiSelect from "./MultiSelect";
 import {Process} from "../Types";
-import {Div, GeneralButton, MainButton, useStyles} from "../styles/Styles";
+import {Div, GeneralButton, MainButton} from "../styles/Styles";
+import {createStyles, makeStyles} from "@mui/styles";
 
 
 interface Props {
     onCreate(process: Process): void
 }
 
+const MyTextField = (props: TextFieldProps) => {
+    return <TextField {...props} sx={{color: 'white', width: '100vh' }}/>
+}
+
 export function ProcessSettingsForm(props: Props) {
-    const [settings, setProcess] = useState<Process>({path: '', names: '', extensions: '', keywords: '', id: 0})
+    const [path, setPath] = useState<string>('')
+    const [names, setNames] = useState<string[]>([])
+    const [extensions, setExts] = useState<string[]>([])
+    const [keywords, setKeywords] = useState<string[]>([])
+    const [settings, setProcess] = useState<Process>({path: '', names: [], extensions: [], keywords: [], id: 0})
+
     const [visibility, setVisibility] = useState(false)
 
     const makeVisible = () => setVisibility(true)
-
     const hide = () => setVisibility(false)
 
     const addNewProcess = () => {
 
         const newProcess: Process = {
-            ...settings,
+            path: path,
+            names: names,
+            extensions: extensions,
+            keywords: keywords,
             id: Date.now()
         }
         setProcess(newProcess)
+
         props.onCreate(newProcess)
+
+        //hide()
     }
-
-
-    const classes = useStyles();
 
     return (
         visibility
             ?
             <Div>
-                <TextField className={classes.input} id="outlined-textarea" label="Path to directory or file">{settings.path}</TextField>
-                <MultiSelect className={classes.input} label="Names of files" options={[]} onChange={(item: readonly string[]) => console.log(item)}/>
-                <MultiSelect className={classes.input} label="Extensions of files" options={[".txt"]}
-                             onChange={(item: readonly string[]) => console.log(item)}/>
-                <MultiSelect className={classes.input} label="Search keywords" options={[]} onChange={(item: readonly string[]) => console.log(item)}/>
+                <MyTextField id="outlined-textarea" label="Path to directory or file"
+                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPath(e.target.value)}/>
+                <MultiSelect label="Names of files"
+                             values={names}
+                             onChange={setNames}
+                />
+                <MultiSelect label="Extensions of files"
+                             options={[".txt"]}
+                             values={extensions}
+                             onChange={setExts}
+                />
+                <MultiSelect label="Search keywords"
+                             values={keywords}
+                             onChange={setKeywords}
+                />
                 <MainButton onClick={addNewProcess}>Start</MainButton>
                 <GeneralButton onClick={hide}>Close</GeneralButton>
             </Div>
