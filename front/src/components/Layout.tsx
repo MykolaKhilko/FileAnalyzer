@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {Process, ProcessProgress} from "../Types";
+import {ProcessSettings, ProcessProgress} from "../Types";
 import {ProcessList} from "./ProcessList";
 import {ProcessSettingsForm} from "./ProcessSettingsForm";
 import {get, post} from "../Requests";
@@ -9,24 +9,30 @@ import {Box, CircularProgress} from "@mui/material";
 
 export default function Layout() {
 
-    const [processes, setProcess] = useState<Process[]>([])
+    const [processes, setProcess] = useState<ProcessSettings[]>([])
     const [processItem, setProcessItem] = useState<ProcessProgress>()
-    const [activeProcess, setNew] = useState<Process>()
+    const [activeProcess, setNew] = useState<ProcessSettings>()
     const [startedNew, setStart] = useState(false)
     const [loading, setLoading] = useState(true)
 
-    function handleProcessCreated(item: Process) {
+    function handleProcessCreated(item: ProcessSettings) {
         const url = "start-process"
         setLoading(true)
 
-        post(url, item).then(response => {
-                if (response.status == 200) {
+        post(url, item).then(response =>
+            {
+                if (response.status == 200)
+                {
                     setNew(item)
                     setStart(true)
                 }
             }
         )
-        //return setProcess(prev => [...prev, item]);
+        return setProcess(prev => [...prev, item]);
+    }
+
+    function handleProcessFinished(){
+
     }
 
     function handleOnClick(){
@@ -39,14 +45,14 @@ export default function Layout() {
     return (
         <Div>
             <ProcessSettingsForm onCreate={handleProcessCreated}/>
-            {loading == true ??
+            {loading ??
                 <Box sx={{ display: 'flex' }}>
                     <CircularProgress />
                 </Box>
             }
             <MainButton onClick={handleOnClick}>Test</MainButton>
-            {startedNew == true ??
-                <ProcessItem process={activeProcess!!}/>
+            {startedNew ??
+                <ProcessItem process={activeProcess!!} onFinish={handleProcessFinished}/>
             }
             <ProcessList processes={processes}/>
         </Div>

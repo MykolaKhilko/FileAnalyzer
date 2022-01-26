@@ -1,4 +1,4 @@
-export interface Process {
+export interface ProcessSettings {
     path: string,
     names: string[],
     extensions: string[],
@@ -11,5 +11,6 @@ export interface ProcessProgress{
     done: number,
     all: number
     timeSpent: number
-    fondMatches: number
+    foundMatches: number
+    finished: boolean
 }

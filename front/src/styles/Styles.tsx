@@ -7,11 +7,11 @@ export const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root:{
             display: "flex",
-            alignItems: "center",
             justifyContent: 'center',
-            background: 'linear-gradient(326deg, #a4508b 0%, #5f0a87 74%);',
-            height: '100vh',
+ //           background: 'linear-gradient(326deg, #a4508b 0%, #5f0a87 74%);',
+            height: '100%',
             width: '100%',
+            margin: 0
         },
         input:{
             width: '100vh',

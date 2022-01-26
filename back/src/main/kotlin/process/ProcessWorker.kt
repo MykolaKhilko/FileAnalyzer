@@ -9,10 +9,10 @@ import kotlin.io.path.Path
 class ProcessWorker(private val settings: ProcessSettings) {
 
     private var filesProcessed: Int = 0
-    var filesToProcess: Int = 1
+    var filesToProcess: Int = 0
     var timeStart: Long = 0
     var fileReader = FileReader(settings.keywords)
-    var foundMatches = fileReader.found
+    var finished = false
 
     var results = mutableListOf<FileInfo>()
 
@@ -30,14 +30,17 @@ class ProcessWorker(private val settings: ProcessSettings) {
         filesToProcess = files.size
 
         files.forEachIndexed{index, file ->
-            filesProcessed = index - 1
             results.add(fileReader.processFile(file))
+            filesProcessed = index
+            Thread.sleep(3000)
         }
+
+        finished = true
     }
 
     fun getProgress() : ProcessProgress{
-        val percentage = (filesProcessed / filesToProcess) * 100
-        val timeSpent = System.currentTimeMillis() - timeStart
-        return ProcessProgress(percentage, filesProcessed, filesToProcess, timeSpent, foundMatches)
+        val percentage = (filesProcessed.toDouble() / filesToProcess.toDouble()) * 100
+        val timeSpent = (System.currentTimeMillis() - timeStart) / 1000
+        return ProcessProgress(percentage.toInt(), filesProcessed, filesToProcess, timeSpent, fileReader.found, finished)
     }
 }

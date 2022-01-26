@@ -5,6 +5,7 @@ data class ProcessProgress (
     val done: Int,
     val all: Int,
     val timeSpent: Long,
-    val foundMatches: Int
+    val foundMatches: Int,
+    val finished: Boolean
 )
 

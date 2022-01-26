@@ -1,10 +1,10 @@
 import React from 'react';
-import {Process} from "../Types";
+import {ProcessSettings} from "../Types";
 import {List} from "@mui/material";
 import {ProcessItem} from "./ProcessItem";
 
 interface Props {
-    processes: Process[]
+    processes: ProcessSettings[]
 }
 
 export function ProcessList(props: Props) {
