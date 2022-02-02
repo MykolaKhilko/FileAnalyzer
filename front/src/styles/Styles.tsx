@@ -1,4 +1,4 @@
-import {Button, ButtonProps, Theme} from "@mui/material";
+import {Box, BoxProps, Button, ButtonProps, Chip, ChipProps, InputLabel, InputLabelProps, Theme} from "@mui/material";
 import React from "react";
 import {createStyles, makeStyles} from "@mui/styles";
 
@@ -43,6 +43,30 @@ export const GeneralButton = (props: ButtonProps) => {
 export const Div = (props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>) => {
     const styles = useStyles()
     return <div className={styles.div} {...props}/>
+}
+
+export const HalfBox = (props: BoxProps) => {
+    return <Box sx={{width: '45%', display: 'flex', flexDirection: 'row', justifyContent:'center', alignItems:'center', marginTop: '2%'}} {...props}/>
+}
+
+export const FullBox = (props: BoxProps) => {
+    return <Box sx={{width: '90%', display: 'flex', flexDirection: 'row', justifyContent:'center', alignItems:'center', marginTop: '2%'}} {...props}/>
+}
+
+export const Chipped = (props: ChipProps) => {
+    return <Chip sx={{width: '25%', justifyContent:'center', marginLeft:'5%', color:'white'}} {...props}/>
+}
+
+export const AutoChip = (props: ChipProps) => {
+    return <Chip sx={{justifyContent:'center', marginLeft:'5%', color:'white'}} {...props}/>
+}
+
+export const InfoLabel = (props: InputLabelProps) => {
+    return <InputLabel sx={{color: 'white'}} {...props}/>
+}
+
+export const Block = (props: BoxProps) => {
+    return <Box sx={{display: 'flex', flexWrap: 'wrap', width: '100%', justifyContent: 'center', alignItems: 'center'}}/>
 }
 
 

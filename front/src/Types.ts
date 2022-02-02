@@ -14,3 +14,8 @@ export interface ProcessProgress{
     foundMatches: number
     finished: boolean
 }
+
+export interface ProcessInfo{
+    settings: ProcessSettings,
+    progress: ProcessProgress
+}

@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {ProcessSettings, ProcessProgress} from "../Types";
+import {ProcessSettings, ProcessProgress, ProcessInfo} from "../Types";
 import {ProcessList} from "./ProcessList";
 import {ProcessSettingsForm} from "./ProcessSettingsForm";
 import {get, post} from "../Requests";
@@ -9,7 +9,8 @@ import {Box, CircularProgress} from "@mui/material";
 
 export default function Layout() {
 
-    const [processes, setProcess] = useState<ProcessSettings[]>([])
+    const [, setSettings] = useState<ProcessSettings[]>([])
+    const [processesList, setProcessesList] = useState<ProcessInfo[]>([])
     const [processItem, setProcessItem] = useState<ProcessProgress>()
     const [activeProcess, setNew] = useState<ProcessSettings>()
     const [startedNew, setStart] = useState(false)
@@ -28,17 +29,19 @@ export default function Layout() {
                 }
             }
         )
-        return setProcess(prev => [...prev, item]);
+        return setSettings(prev => [...prev, item]);
     }
 
-    function handleProcessFinished(){
-
+    function handleProcessFinished(info: ProcessInfo) {
+        setProcessesList(prev => [...prev, info])
     }
 
     function handleOnClick(){
         const url = "/ProcessDirectoryTest"
 
-        get(url)
+        //get(url)
+
+        const info = ProcessInfo(ProcessSettings())
     }
 
 
@@ -54,7 +57,7 @@ export default function Layout() {
             {startedNew ??
                 <ProcessItem process={activeProcess!!} onFinish={handleProcessFinished}/>
             }
-            <ProcessList processes={processes}/>
+            <ProcessList processes={processesList}/>
         </Div>
     )
 }
