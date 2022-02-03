@@ -23,7 +23,7 @@ class ProcessWorker(private val settings: ProcessSettings) {
             "No files in directory"
     }
 
-    fun startNewProcess(){
+    fun startNewProcess() : ProcessInfo{
         val files = FileFinder().processDirectory(settings.path, settings.names, settings.extensions)
 
         timeStart = System.currentTimeMillis()
@@ -31,11 +31,13 @@ class ProcessWorker(private val settings: ProcessSettings) {
 
         files.forEachIndexed{index, file ->
             results.add(fileReader.processFile(file))
-            filesProcessed = index
-            Thread.sleep(3000)
+            filesProcessed++
+            Thread.sleep(6000)
         }
 
         finished = true
+
+        return ProcessInfo(settings, getProgress())
     }
 
     fun getProgress() : ProcessProgress{

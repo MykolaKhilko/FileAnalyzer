@@ -6,11 +6,15 @@ import io.ktor.http.*
 import io.ktor.application.*
 import io.ktor.response.*
 import io.ktor.request.*
+import kotlinx.coroutines.*
+import process.ProcessInfo
 import process.ProcessWorker
 import process.ProcessSettings
+import java.util.concurrent.ExecutorService
 
 fun Application.configureRouting() {
     val workers = mutableMapOf<Long, ProcessWorker>()
+    val Db = mutableListOf<ProcessInfo>()
 
     routing {
         get("/api") {
@@ -22,20 +26,26 @@ fun Application.configureRouting() {
             val settings = ProcessSettings(path, null, null, keys, 1)
 
             val worker = ProcessWorker(settings)
-            worker.startNewProcess()
+            Db.add(worker.startNewProcess())
         }
         post<ProcessSettings>("/api/start-process") { settings ->
             val worker = ProcessWorker(settings)
 
             val validationResult = worker.validateSettings()
-            if (validationResult.isEmpty())
-                call.respond(HttpStatusCode.OK)
-            else
+            if (validationResult.isNotEmpty())
                 call.respond(HttpStatusCode.BadRequest, validationResult)
 
-            workers[settings.id] = worker
+            withContext(Dispatchers.IO) {
+                launch {
+                    workers[settings.id] = worker
+                    worker.startNewProcess()
+                }
+            }
 
-            worker.startNewProcess()
+            call.respond(HttpStatusCode.OK)
+        }
+        get("/api/fetch-list"){
+            call.respond(HttpStatusCode.OK)
         }
         get("/api/fetch-progress"){
             val id = call.request.queryParameters["id"]!!.toLong()

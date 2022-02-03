@@ -75,6 +75,5 @@ export function ProcessSettingsForm(props: Props) {
                 <GeneralButton onClick={hide}>Close</GeneralButton>
             </Div>
             : <MainButton onClick={makeVisible}>Add process</MainButton>
-
     )
 }

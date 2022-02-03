@@ -66,7 +66,7 @@ export const InfoLabel = (props: InputLabelProps) => {
 }
 
 export const Block = (props: BoxProps) => {
-    return <Box sx={{display: 'flex', flexWrap: 'wrap', width: '100%', justifyContent: 'center', alignItems: 'center'}}/>
+    return <Box sx={{display: 'flex', flexWrap: 'wrap', width: '100%', justifyContent: 'center', alignItems: 'center'}} {...props}/>
 }
 
 

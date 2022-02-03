@@ -10,65 +10,69 @@ interface Props {
 }
 
 export function ProcessList(props: Props) {
-
+//4mm ridge rgba(170, 50, 220, .6)
+    //, flexDirection: "column"
     return (
-        <List sx={{width: '100%'}}>
-            {props.processes.map((item, index) => {
-                return (
-                    <ListItem>
-                        <Block>
-                            <FullBox>
-                                <InfoLabel>Path:</InfoLabel>
-                                <AutoChip label={item.settings.path}/>
-                            </FullBox>
+        <Block>
+            <List sx={{width: '100%'}}>
+                {props.processes.map((item, index) => {
+                    return (
+                        <ListItem sx={{border: "5px ridge rgba(170, 50, 220, .6)"}}>
+                            <Block>
+                                <FullBox>
+                                    <InfoLabel>Path:</InfoLabel>
+                                    <AutoChip label={item.settings.path}/>
+                                </FullBox>
 
-                            <FullBox>
-                                <InfoLabel>Names:</InfoLabel>
-                                {item.settings.names.map((name) => {
-                                    return <AutoChip label={name}/>
-                                })}
-                            </FullBox>
+                                <FullBox>
+                                    <InfoLabel>Names:</InfoLabel>
+                                    {item.settings.names.map((name) => {
+                                        return <AutoChip label={name}/>
+                                    })}
+                                </FullBox>
 
-                            <FullBox>
-                                <InfoLabel>Extensions:</InfoLabel>
-                                {item.settings.extensions.map((ext) => {
-                                    return <AutoChip label={ext}/>
-                                })}
-                            </FullBox>
+                                <FullBox>
+                                    <InfoLabel>Extensions:</InfoLabel>
+                                    {item.settings.extensions.map((ext) => {
+                                        return <AutoChip label={ext}/>
+                                    })}
+                                </FullBox>
 
-                            <FullBox>
-                                <InfoLabel>Keywords:</InfoLabel>
-                                {item.settings.keywords.map((key) => {
-                                    return <AutoChip label={key}/>
-                                })}
-                            </FullBox>
-                        </Block>
+                                <FullBox>
+                                    <InfoLabel>Keywords:</InfoLabel>
+                                    {item.settings.keywords.map((key) => {
+                                        return <AutoChip label={key}/>
+                                    })}
+                                </FullBox>
+                            </Block>
 
-                        <Block>
-                            <HalfBox>
-                                <InfoLabel>Processed files</InfoLabel>
-                                <Chipped label={item.progress.done}/>
-                            </HalfBox>
+                            <Block>
+                                <HalfBox>
+                                    <InfoLabel>Processed files</InfoLabel>
+                                    <Chipped label={item.progress.done}/>
+                                </HalfBox>
 
-                            <HalfBox>
-                                <InfoLabel>All files:</InfoLabel>
-                                <Chipped label={item.progress.all}/>
-                            </HalfBox>
+                                <HalfBox>
+                                    <InfoLabel>All files:</InfoLabel>
+                                    <Chipped label={item.progress.all}/>
+                                </HalfBox>
 
-                            <HalfBox>
-                                <InfoLabel>Time spent:</InfoLabel>s
-                                <Chipped label={getTime(item.progress.timeSpent)}/>
-                            </HalfBox>
+                                <HalfBox>
+                                    <InfoLabel>Time spent:</InfoLabel>
+                                    <Chipped label={getTime(item.progress.timeSpent)}/>
+                                </HalfBox>
 
-                            <HalfBox>
-                                <InfoLabel>Found matches:</InfoLabel>
-                                <Chipped label={item.progress.foundMatches}/>
-                            </HalfBox>
-                        </Block>
-                    </ListItem>
-                )
-            })}
-        </List>
+                                <HalfBox>
+                                    <InfoLabel>Found matches:</InfoLabel>
+                                    <Chipped label={item.progress.foundMatches}/>
+                                </HalfBox>
+                            </Block>
+                        </ListItem>
+                    )
+                })}
+            </List>
+        </Block>
+
 
         // <List>
         //     {props.processes.map((item, index) => {

@@ -9,12 +9,12 @@ import {Box, CircularProgress} from "@mui/material";
 
 export default function Layout() {
 
-    const [, setSettings] = useState<ProcessSettings[]>([])
+    const [setttings, setSettings] = useState<ProcessSettings[]>([])
     const [processesList, setProcessesList] = useState<ProcessInfo[]>([])
     const [processItem, setProcessItem] = useState<ProcessProgress>()
     const [activeProcess, setNew] = useState<ProcessSettings>()
     const [startedNew, setStart] = useState(false)
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(false)
 
     function handleProcessCreated(item: ProcessSettings) {
         const url = "start-process"
@@ -29,34 +29,38 @@ export default function Layout() {
                 }
             }
         )
+        setNew(item)
+        setStart(true)
         return setSettings(prev => [...prev, item]);
     }
 
     function handleProcessFinished(info: ProcessInfo) {
+        //setNew()
+        setStart(false)
         setProcessesList(prev => [...prev, info])
     }
 
     function handleOnClick(){
         const url = "/ProcessDirectoryTest"
 
-        //get(url)
-
-        const info = ProcessInfo(ProcessSettings())
+        get(url)
     }
 
+    function componentDidMount() {
+        const url = "fetch-list"
+    }
 
     return (
         <Div>
             <ProcessSettingsForm onCreate={handleProcessCreated}/>
-            {loading ??
-                <Box sx={{ display: 'flex' }}>
-                    <CircularProgress />
-                </Box>
-            }
+
             <MainButton onClick={handleOnClick}>Test</MainButton>
-            {startedNew ??
+            <div>
+            {startedNew ?
                 <ProcessItem process={activeProcess!!} onFinish={handleProcessFinished}/>
+                : <div></div>
             }
+            </div>
             <ProcessList processes={processesList}/>
         </Div>
     )
