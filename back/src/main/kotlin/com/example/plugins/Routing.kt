@@ -53,5 +53,16 @@ fun Application.configureRouting() {
 
             call.respond(worker.getProgress())
         }
+        get("api/get-process-details"){
+            val id = call.request.queryParameters["id"]!!.toLong()
+            val worker = workers.getValue(id)
+
+            call.respond(worker.getDetails())
+        }
+        post<Int>("/api/delete-process"){ id ->
+            workers.remove(id.toLong())
+
+            call.respond(HttpStatusCode.OK)
+        }
     }
 }

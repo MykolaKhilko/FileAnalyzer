@@ -45,4 +45,8 @@ class ProcessWorker(private val settings: ProcessSettings) {
         val timeSpent = (System.currentTimeMillis() - timeStart) / 1000
         return ProcessProgress(percentage.toInt(), filesProcessed, filesToProcess, timeSpent, fileReader.found, finished)
     }
+
+    fun getDetails() : Array<FileInfo>{
+        return results.toTypedArray()
+    }
 }

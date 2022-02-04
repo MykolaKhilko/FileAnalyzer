@@ -2,7 +2,8 @@ import React, {ChangeEvent, useState} from "react";
 import {Button, Autocomplete, Theme, ButtonProps, TextFieldProps, TextField} from "@mui/material";
 import MultiSelect from "./MultiSelect";
 import {ProcessSettings} from "../Types";
-import {Div, GeneralButton, MainButton} from "../styles/Styles";
+import {Block, Div, GeneralButton, MainButton} from "../styles/Styles";
+import {get} from "../Requests";
 
 
 interface Props {
@@ -46,7 +47,15 @@ export function ProcessSettingsForm(props: Props) {
 
         props.onCreate(newProcess)
 
-        disable()
+        //disable()
+
+        hide()
+    }
+
+    function handleOnClick(){
+        const url = "/ProcessDirectoryTest"
+
+        get(url)
     }
 
     return (
@@ -71,8 +80,12 @@ export function ProcessSettingsForm(props: Props) {
                              values={keywords}
                              onChange={setKeywords}
                 />
-                <MainButton onClick={addNewProcess}>Start</MainButton>
-                <GeneralButton onClick={hide}>Close</GeneralButton>
+                <Block>
+                    <MainButton onClick={addNewProcess}>Start</MainButton>
+                    <GeneralButton onClick={hide}>Close</GeneralButton>
+                    <MainButton onClick={handleOnClick}>Test</MainButton>
+                </Block>
+
             </Div>
             : <MainButton onClick={makeVisible}>Add process</MainButton>
     )

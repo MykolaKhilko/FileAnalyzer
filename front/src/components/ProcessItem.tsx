@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {ProcessInfo, ProcessProgress, ProcessSettings} from "../Types";
-import {Box, BoxProps, Chip, ChipProps, Grid, InputLabel, LinearProgress} from "@mui/material";
-import {HalfBox, Chipped, InfoLabel, Block} from "../styles/Styles";
+import {Box, BoxProps, Chip, ChipProps, Grid, InputLabel, LinearProgress, Typography} from "@mui/material";
+import {HalfBox, Chipped, InfoLabel, Block, FullBox, AutoChip, Div, FullBoxWithChips} from "../styles/Styles";
 import {get, post} from "../Requests";
 import useInterval from "../hooks/useInterval";
 import {getTime} from "../utils/Utils";
@@ -42,6 +42,10 @@ export function ProcessItem(props: Props) {
 
     }
 
+    const componentWillUnmount = () => {
+        setInProgress(false)
+    }
+
     const finishProgress = () => {
         const info: ProcessInfo = {
             settings: props.process,
@@ -52,8 +56,55 @@ export function ProcessItem(props: Props) {
     }
 
     return (
-        <div>
-            <LinearProgress variant={"determinate"} value={progress.percentage} sx={{color: 'orange', marginY: '2%'}}/>
+        <Div>
+            <Block>
+                <FullBox>
+                    <InfoLabel>Path:</InfoLabel>
+                    <AutoChip label={props.process.path}/>
+                </FullBox>
+
+
+                {props.process.names.length == 0 ? <div></div> :
+                    <FullBox>
+                        <InfoLabel>Names:</InfoLabel>
+                        <FullBoxWithChips>
+                            {props.process.names.map((name) => {
+                                return <AutoChip label={name}/>
+                            })}
+                        </FullBoxWithChips>
+                    </FullBox>
+                }
+
+                {props.process.extensions.length == 0 ? <div></div> :
+                    <FullBox>
+                        <InfoLabel>Extensions:</InfoLabel>
+                        <FullBoxWithChips>
+                            {props.process.extensions.map((ext) => {
+                                return <AutoChip label={ext}/>
+                            })}
+                        </FullBoxWithChips>
+                    </FullBox>
+                }
+
+
+                <FullBox>
+                    <InfoLabel>Keywords:</InfoLabel>
+                    <FullBoxWithChips>
+                        {props.process.keywords.map((key) => {
+                            return <AutoChip label={key}/>
+                        })}
+                    </FullBoxWithChips>
+                </FullBox>
+            </Block>
+
+            <Block>
+                <LinearProgress color="inherit" variant={"determinate"} value={progress.percentage} sx={{color: 'orange', marginY: '2%', width: "90%"}}/>
+                <Typography sx={{width: "5%", marginLeft: "3%", color: "white"}}>
+                    {`${Math.round(
+                        progress.percentage,
+                    )}%`}
+                </Typography>
+            </Block>
 
             <Block>
                 <LinearProgress variant={"determinate"} value={progress.percentage}/>
@@ -78,6 +129,6 @@ export function ProcessItem(props: Props) {
                     <Chipped label={progress.foundMatches}/>
                 </HalfBox>
             </Block>
-        </div>
+        </Div>
     )
 }

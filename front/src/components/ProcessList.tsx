@@ -2,47 +2,78 @@ import React from 'react';
 import {ProcessInfo, ProcessSettings} from "../Types";
 import {Box, List, ListItem} from "@mui/material";
 import {ProcessItem} from "./ProcessItem";
-import {Block, Chipped, InfoLabel, HalfBox, FullBox, AutoChip} from "../styles/Styles";
+import {
+    Block,
+    Chipped,
+    InfoLabel,
+    HalfBox,
+    FullBox,
+    AutoChip,
+    MainButton,
+    GeneralButton,
+    FullBoxWithChips
+} from "../styles/Styles";
 import {getTime} from "../utils/Utils";
 
 interface Props {
     processes: ProcessInfo[]
+    onProcessDeleted(id: number): void
+    onProcessDetails(id: number): void
 }
 
 export function ProcessList(props: Props) {
+
+    function onDelete (id: number) {
+      props.onProcessDeleted(id)
+    }
+
+    const onDetails = (id: number) => {
+        props.onProcessDetails(id)
+    }
 //4mm ridge rgba(170, 50, 220, .6)
-    //, flexDirection: "column"
+    //, flexDirection: "column"    rgba(249, 105, 14, 1)
     return (
         <Block>
             <List sx={{width: '100%'}}>
-                {props.processes.map((item, index) => {
+                {props.processes.slice(0).reverse().map((item, index) => {
                     return (
-                        <ListItem sx={{border: "5px ridge rgba(170, 50, 220, .6)"}}>
+                        <ListItem key={item.settings.id}
+                                  sx={{border: "3px solid rgba(249, 105, 14, 1)", marginTop: '2%', borderRadius: 5}}>
                             <Block>
                                 <FullBox>
                                     <InfoLabel>Path:</InfoLabel>
                                     <AutoChip label={item.settings.path}/>
                                 </FullBox>
 
-                                <FullBox>
-                                    <InfoLabel>Names:</InfoLabel>
-                                    {item.settings.names.map((name) => {
-                                        return <AutoChip label={name}/>
-                                    })}
-                                </FullBox>
+                                {item.settings.names.length == 0 ? <div></div> :
+                                    <FullBox>
+                                        <InfoLabel>Names:</InfoLabel>
+                                        <FullBoxWithChips>
+                                            {item.settings.names.map((name) => {
+                                                return <AutoChip label={name}/>
+                                            })}
+                                        </FullBoxWithChips>
+                                    </FullBox>
+                                }
 
-                                <FullBox>
-                                    <InfoLabel>Extensions:</InfoLabel>
-                                    {item.settings.extensions.map((ext) => {
-                                        return <AutoChip label={ext}/>
-                                    })}
-                                </FullBox>
+                                {item.settings.extensions.length == 0 ? <div></div> :
+                                    <FullBox>
+                                        <InfoLabel>Extensions:</InfoLabel>
+                                        <FullBoxWithChips>
+                                            {item.settings.extensions.map((ext) => {
+                                                return <AutoChip label={ext}/>
+                                            })}
+                                        </FullBoxWithChips>
+                                    </FullBox>
+                                }
 
                                 <FullBox>
                                     <InfoLabel>Keywords:</InfoLabel>
-                                    {item.settings.keywords.map((key) => {
-                                        return <AutoChip label={key}/>
-                                    })}
+                                    <FullBoxWithChips>
+                                        {item.settings.keywords.map((key) => {
+                                            return <AutoChip label={key}/>
+                                        })}
+                                    </FullBoxWithChips>
                                 </FullBox>
                             </Block>
 
@@ -66,6 +97,13 @@ export function ProcessList(props: Props) {
                                     <InfoLabel>Found matches:</InfoLabel>
                                     <Chipped label={item.progress.foundMatches}/>
                                 </HalfBox>
+
+                                <HalfBox>
+                                    <MainButton onClick={() => onDelete(item.settings.id)}>Details</MainButton>
+                                </HalfBox>
+                                <HalfBox>
+                                    <GeneralButton onClick={() => onDetails(item.settings.id)}>Delete</GeneralButton>
+                                </HalfBox>
                             </Block>
                         </ListItem>
                     )
@@ -79,6 +117,26 @@ export function ProcessList(props: Props) {
         //         return <ProcessItem key={index} process={item}/>
         //     })}
         // </List>
+
+    // {/*<FullBox>*/}
+    // {/*    <InfoLabel>Names:</InfoLabel>*/}
+    // {/*    {item.settings.extensions.length == 0 ? <div></div> :*/}
+    // {/*        item.settings.names.map((name) => {*/}
+    // {/*            return <AutoChip label={name ?? "none"}/>*/}
+    // {/*        })*/}
+    // {/*    }*/}
+    //
+    // {/*</FullBox>*/}
+    //
+    // {/*<FullBox>*/}
+    // {/*    <InfoLabel>Extensions:</InfoLabel>*/}
+    // {/*    {item.settings.extensions.length == 0 ? <AutoChip label={"-"}/> :*/}
+    // {/*        item.settings.extensions.map((ext) => {*/}
+    // {/*            return <AutoChip label={ext ?? "none"}/>*/}
+    // {/*        })*/}
+    // {/*    }*/}
+    //
+    // {/*</FullBox>*/}
     );
 }
 
