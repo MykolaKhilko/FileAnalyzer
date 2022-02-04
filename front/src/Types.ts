@@ -19,3 +19,16 @@ export interface ProcessInfo{
     settings: ProcessSettings,
     progress: ProcessProgress
 }
+
+export interface FileInfo{
+    name: string,
+    path: string,
+    wordInfo: WordInfo[]
+}
+
+export interface WordInfo{
+    line: number,
+    index: number,
+    match: string,
+    context: string
+}

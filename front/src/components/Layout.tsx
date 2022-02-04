@@ -5,7 +5,7 @@ import {ProcessSettingsForm} from "./ProcessSettingsForm";
 import {get, post} from "../Requests";
 import {Block, Div, MainButton, } from "../styles/Styles";
 import {ProcessItem} from "./ProcessItem";
-import {Box, CircularProgress} from "@mui/material";
+import {Box, CircularProgress, Snackbar} from "@mui/material";
 import {ActiveProcessesList} from "./ActiveProcessesList";
 
 export default function Layout() {
@@ -14,7 +14,7 @@ export default function Layout() {
     const [processesList, setProcessesList] = useState<ProcessInfo[]>([])
     const [processItem, setProcessItem] = useState<ProcessProgress>()
     const [activeProcesses, setNew] = useState<ProcessSettings[]>([])
-    //const [startedNew, setStart] = useState(false)
+    const [finished, setFinished] = useState(false)
     const [loading, setLoading] = useState(false)
 
     function handleProcessCreated(item: ProcessSettings) {
@@ -38,6 +38,8 @@ export default function Layout() {
         setNew(act)
         //setStart(false)
         setProcessesList(prev => [...prev, info])
+
+        setFinished(true)
     }
 
     function handleProcessDeleted(id: number){
@@ -63,6 +65,13 @@ export default function Layout() {
             </Block>
 
             <ProcessList processes={processesList} onProcessDeleted={handleProcessDeleted} onProcessDetails={handleProcessDetails}/>
+
+            <Snackbar
+                open={finished}
+                autoHideDuration={6000}
+                message="Process finished"
+                onClose={() => setFinished(false)}
+            />
         </Div>
     )
 }

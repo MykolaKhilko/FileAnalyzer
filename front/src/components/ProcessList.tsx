@@ -99,10 +99,10 @@ export function ProcessList(props: Props) {
                                 </HalfBox>
 
                                 <HalfBox>
-                                    <MainButton onClick={() => onDelete(item.settings.id)}>Details</MainButton>
+                                    <MainButton onClick={() => onDetails(item.settings.id)}>Details</MainButton>
                                 </HalfBox>
                                 <HalfBox>
-                                    <GeneralButton onClick={() => onDetails(item.settings.id)}>Delete</GeneralButton>
+                                    <GeneralButton onClick={() => onDelete(item.settings.id)}>Delete</GeneralButton>
                                 </HalfBox>
                             </Block>
                         </ListItem>
