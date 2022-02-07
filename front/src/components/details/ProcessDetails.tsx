@@ -17,31 +17,29 @@ export function ProcessDetails(props: Props) {
     };
 
     return (
-        <div>
-            <Dialog
-                open={open}
-                onClose={handleClose}
-                scroll={"body"}
-                aria-labelledby="scroll-dialog-title"
-                aria-describedby="scroll-dialog-description"
-            >
-                <DialogTitle id="scroll-dialog-title"></DialogTitle>
-                <DialogContent>
-                    <List sx={{width: '100%'}}>
-                        {props.info.map((file, index) => {
-                            return (
-                                <ListItem key={index}>
-                                    <FileDetails file={file}/>
-                                </ListItem>
-                            )
-                        })}
-                    </List>
-                </DialogContent>
-                <DialogActions>
-                    <GeneralButton onClick={handleClose}>Cancel</GeneralButton>
-                    <MainButton onClick={handleClose}>Print</MainButton>
-                </DialogActions>
-            </Dialog>
-        </div>
+        <Dialog
+            open={open}
+            onClose={handleClose}
+            scroll={"body"}
+            aria-labelledby="scroll-dialog-title"
+            aria-describedby="scroll-dialog-description"
+        >
+            <DialogTitle id="scroll-dialog-title"></DialogTitle>
+            <DialogContent>
+                <List sx={{width: '100%'}}>
+                    {props.info.map((file, index) => {
+                        return (
+                            <ListItem key={index}>
+                                <FileDetails file={file}/>
+                            </ListItem>
+                        )
+                    })}
+                </List>
+            </DialogContent>
+            <DialogActions>
+                <GeneralButton onClick={handleClose}>Cancel</GeneralButton>
+                <MainButton onClick={handleClose}>Print</MainButton>
+            </DialogActions>
+        </Dialog>
     )
 }

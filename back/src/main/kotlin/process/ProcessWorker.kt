@@ -32,7 +32,7 @@ class ProcessWorker(private val settings: ProcessSettings) {
         files.forEachIndexed{index, file ->
             results.add(fileReader.processFile(file))
             filesProcessed++
-            Thread.sleep(6000)
+            Thread.sleep(500)
         }
 
         finished = true

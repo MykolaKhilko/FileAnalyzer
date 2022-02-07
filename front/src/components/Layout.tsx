@@ -51,14 +51,6 @@ export default function Layout() {
         post(url, id).then(r => {})
     }
 
-    async function handleProcessDetails(id: number) {
-        const url = "get-process-details"
-
-        const data = await get(url, {id: id}) as FileInfo[];
-
-        return <ProcessDetails info={data}/>
-    }
-
     function componentDidMount() {
         const url = "fetch-list"
     }
@@ -70,7 +62,7 @@ export default function Layout() {
                 <ActiveProcessesList processes={activeProcesses} onFinish={handleProcessFinished}/>
             </Block>
 
-            <ProcessList processes={processesList} onProcessDeleted={handleProcessDeleted} onProcessDetails={handleProcessDetails}/>
+            <ProcessList processes={processesList} onProcessDeleted={handleProcessDeleted}/>
 
             <Snackbar
                 open={finished}

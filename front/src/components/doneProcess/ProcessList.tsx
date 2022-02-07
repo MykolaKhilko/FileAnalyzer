@@ -1,5 +1,5 @@
-import React from 'react';
-import {ProcessInfo, ProcessSettings} from "../../Types";
+import React, {useState} from 'react';
+import {FileInfo, ProcessInfo, ProcessSettings} from "../../Types";
 import {List, ListItem} from "@mui/material";
 import {getTime} from "../../utils/Utils";
 import {ProcessItem} from "./ProcessItem";
@@ -8,21 +8,27 @@ import {Block} from "../styledComponents/Block";
 import {HalfBox} from "../styledComponents/HalfBox";
 import {MainButton} from "../styledComponents/MainButton";
 import {GeneralButton} from "../styledComponents/GeneralButton";
+import {get} from "../../Requests";
+import {ProcessDetails} from "../details/ProcessDetails";
 
 interface Props {
     processes: ProcessInfo[]
     onProcessDeleted(id: number): void
-    onProcessDetails(id: number): void
 }
 
 export function ProcessList(props: Props) {
+    const [result, setResult] = useState<FileInfo[]>([])
 
     function onDelete (id: number) {
       props.onProcessDeleted(id)
     }
 
-    const onDetails = (id: number) => {
-        props.onProcessDetails(id)
+    const onDetails = async (id: number) => {
+        const url = "get-process-details"
+
+        const data = await get(url, {id: id}) as FileInfo[];
+
+        setResult(data)
     }
 //4mm ridge rgba(170, 50, 220, .6)
     //, flexDirection: "column"    rgba(249, 105, 14, 1)
@@ -49,6 +55,8 @@ export function ProcessList(props: Props) {
                     )
                 })}
             </List>
+
+            {result ?? <ProcessDetails info={result}/>}
         </Block>
 
 
