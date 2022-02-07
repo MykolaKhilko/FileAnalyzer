@@ -1,8 +1,7 @@
-import {ProcessInfo, ProcessSettings} from "../Types";
-import {Block, useStyles} from "../styles/Styles";
+import {ProcessInfo, ProcessSettings} from "../../Types";
 import {List, ListItem} from "@mui/material";
-import {ProcessItem} from "./ProcessItem";
-import {useState} from "react";
+import {ActiveProcessItem} from "./ActiveProcessItem";
+import {Block} from "../styledComponents/Block";
 
 interface Props {
     processes: ProcessSettings[]
@@ -17,7 +16,7 @@ export function ActiveProcessesList(props: Props) {
                 {props.processes.map((item, index) => {
                     return (
                         <ListItem key={item.id} sx={{border: "3px solid rgba(249, 105, 14, 1)", marginTop: '2%', borderRadius: 5}}>
-                            <ProcessItem key={item.id} process={item} onFinish={props.onFinish}/>
+                            <ActiveProcessItem key={item.id} process={item} onFinish={props.onFinish}/>
                         </ListItem>
                     )
                 })}

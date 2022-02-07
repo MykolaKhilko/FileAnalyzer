@@ -1,25 +1,25 @@
 import {useState} from "react";
-import {ProcessSettings, ProcessProgress, ProcessInfo} from "../Types";
-import {ProcessList} from "./ProcessList";
+import {ProcessSettings, ProcessProgress, ProcessInfo, FileInfo} from "../Types";
+import {ProcessList} from "./doneProcess/ProcessList";
 import {ProcessSettingsForm} from "./ProcessSettingsForm";
 import {get, post} from "../Requests";
-import {Block, Div, MainButton, } from "../styles/Styles";
-import {ProcessItem} from "./ProcessItem";
+import {ActiveProcessItem} from "./activeProcess/ActiveProcessItem";
 import {Box, CircularProgress, Snackbar} from "@mui/material";
-import {ActiveProcessesList} from "./ActiveProcessesList";
+import {ActiveProcessesList} from "./activeProcess/ActiveProcessesList";
+import {ProcessDetails} from "./details/ProcessDetails";
+import {Div} from "./styledComponents/Div";
+import {Block} from "./styledComponents/Block";
 
 export default function Layout() {
 
-    const [setttings, setSettings] = useState<ProcessSettings[]>([])
+    const [settings, setSettings] = useState<ProcessSettings[]>([])
     const [processesList, setProcessesList] = useState<ProcessInfo[]>([])
     const [processItem, setProcessItem] = useState<ProcessProgress>()
     const [activeProcesses, setNew] = useState<ProcessSettings[]>([])
     const [finished, setFinished] = useState(false)
-    const [loading, setLoading] = useState(false)
 
     function handleProcessCreated(item: ProcessSettings) {
         const url = "start-process"
-        setLoading(true)
 
         post(url, item).then(response => {
                 if (response.status == 200) {
@@ -46,11 +46,17 @@ export default function Layout() {
         const list = processesList.filter(p => p.settings.id !== id)
         setProcessesList(list)
 
-        //to server delete
+        const url = "delete-process"
+
+        post(url, id).then(r => {})
     }
 
-    function handleProcessDetails(id: number){
+    async function handleProcessDetails(id: number) {
+        const url = "get-process-details"
 
+        const data = await get(url, {id: id}) as FileInfo[];
+
+        return <ProcessDetails info={data}/>
     }
 
     function componentDidMount() {
@@ -75,4 +81,4 @@ export default function Layout() {
         </Div>
     )
 }
-//<ProcessItem process={activeProcess!!} onFinish={handleProcessFinished}/>
+//<ActiveProcessItem process={activeProcess!!} onFinish={handleProcessFinished}/>

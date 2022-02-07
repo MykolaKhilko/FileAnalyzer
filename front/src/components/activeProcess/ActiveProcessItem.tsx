@@ -1,10 +1,17 @@
 import React, {useState} from 'react';
-import {ProcessInfo, ProcessProgress, ProcessSettings} from "../Types";
+import {ProcessInfo, ProcessProgress, ProcessSettings} from "../../Types";
 import {Box, BoxProps, Chip, ChipProps, Grid, InputLabel, LinearProgress, Typography} from "@mui/material";
-import {HalfBox, Chipped, InfoLabel, Block, FullBox, AutoChip, Div, FullBoxWithChips} from "../styles/Styles";
-import {get, post} from "../Requests";
-import useInterval from "../hooks/useInterval";
-import {getTime} from "../utils/Utils";
+import {get, post} from "../../Requests";
+import useInterval from "../../hooks/useInterval";
+import {getTime} from "../../utils/Utils";
+import {Div} from "../styledComponents/Div";
+import {Block} from "../styledComponents/Block";
+import {FullBox} from "../styledComponents/FullBox";
+import {InfoLabel} from "../styledComponents/InfoLabel";
+import {AutoChip} from "../styledComponents/AutoChip";
+import {FullBoxWithChips} from "../styledComponents/FullBoxWithChips";
+import {HalfBox} from "../styledComponents/HalfBox";
+import {Chipped} from "../styledComponents/Chipped";
 
 interface Props {
     process: ProcessSettings
@@ -12,7 +19,7 @@ interface Props {
     onFinish(info: ProcessInfo): void
 }
 
-export function ProcessItem(props: Props) {
+export function ActiveProcessItem(props: Props) {
 
     const [progress, setProgress] = useState<ProcessProgress>({
         all: 1,

@@ -2,8 +2,11 @@ import React, {ChangeEvent, useState} from "react";
 import {Button, Autocomplete, Theme, ButtonProps, TextFieldProps, TextField} from "@mui/material";
 import MultiSelect from "./MultiSelect";
 import {ProcessSettings} from "../Types";
-import {Block, Div, GeneralButton, MainButton} from "../styles/Styles";
 import {get} from "../Requests";
+import {Div} from "./styledComponents/Div";
+import {Block} from "./styledComponents/Block";
+import {MainButton} from "./styledComponents/MainButton";
+import {GeneralButton} from "./styledComponents/GeneralButton";
 
 
 interface Props {

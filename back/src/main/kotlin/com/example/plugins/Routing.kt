@@ -59,8 +59,8 @@ fun Application.configureRouting() {
 
             call.respond(worker.getDetails())
         }
-        post<Int>("/api/delete-process"){ id ->
-            workers.remove(id.toLong())
+        post<Long>("/api/delete-process"){ id ->
+            workers.remove(id)
 
             call.respond(HttpStatusCode.OK)
         }
