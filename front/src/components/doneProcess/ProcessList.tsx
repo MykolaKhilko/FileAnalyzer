@@ -18,6 +18,7 @@ interface Props {
 
 export function ProcessList(props: Props) {
     const [result, setResult] = useState<FileInfo[]>([])
+    const [openDialog, setOpenDialog] = useState<boolean>(false)
 
     function onDelete (id: number) {
       props.onProcessDeleted(id)
@@ -29,6 +30,11 @@ export function ProcessList(props: Props) {
         const data = await get(url, {id: id}) as FileInfo[];
 
         setResult(data)
+        setOpenDialog(true)
+    }
+
+    const handleCloseDialog = () => {
+        setOpenDialog(false)
     }
 //4mm ridge rgba(170, 50, 220, .6)
     //, flexDirection: "column"    rgba(249, 105, 14, 1)
@@ -56,7 +62,7 @@ export function ProcessList(props: Props) {
                 })}
             </List>
 
-            {result ?? <ProcessDetails info={result}/>}
+            <ProcessDetails info={result} open={openDialog} onClose={handleCloseDialog}/>
         </Block>
 
 

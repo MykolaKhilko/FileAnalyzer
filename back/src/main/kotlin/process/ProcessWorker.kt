@@ -11,6 +11,7 @@ class ProcessWorker(private val settings: ProcessSettings) {
     private var filesProcessed: Int = 0
     var filesToProcess: Int = 0
     var timeStart: Long = 0
+    var timeFinish: Long = 0
     var fileReader = FileReader(settings.keywords)
     var finished = false
 
@@ -36,17 +37,22 @@ class ProcessWorker(private val settings: ProcessSettings) {
         }
 
         finished = true
+        timeFinish = System.currentTimeMillis()
 
         return ProcessInfo(settings, getProgress())
     }
 
     fun getProgress() : ProcessProgress{
         val percentage = (filesProcessed.toDouble() / filesToProcess.toDouble()) * 100
-        val timeSpent = (System.currentTimeMillis() - timeStart) / 1000
+        val timeSpent = ((if (timeFinish == 0L) System.currentTimeMillis() else timeFinish) - timeStart) / 1000
         return ProcessProgress(percentage.toInt(), filesProcessed, filesToProcess, timeSpent, fileReader.found, finished)
     }
 
     fun getDetails() : Array<FileInfo>{
         return results.toTypedArray()
+    }
+
+    fun getProcessInfo() : ProcessInfo{
+        return ProcessInfo(settings, getProgress())
     }
 }

@@ -15,7 +15,7 @@ interface Props {
 
 const MyTextField = (props: TextFieldProps) => {
     return <TextField sx={{color: 'white', width: '100vh',  input: {color: 'white' },
-        "& .MuiFormLabel-root": { color: "orange" }}} {...props} />
+        "& .MuiFormLabel-root": { color: "white" }}} {...props} />
 }
 
 export function ProcessSettingsForm(props: Props) {

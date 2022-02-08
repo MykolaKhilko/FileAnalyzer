@@ -2,6 +2,11 @@ import {WordInfo} from "../../Types";
 import {FullBox} from "../styledComponents/FullBox";
 import {InfoLabel} from "../styledComponents/InfoLabel";
 import {AutoChip} from "../styledComponents/AutoChip";
+import {QuarterBox} from "../styledComponents/QuarterBox";
+import {HalfBox} from "../styledComponents/HalfBox";
+import {FullBoxWithChips} from "../styledComponents/FullBoxWithChips";
+import {Chipped} from "../styledComponents/Chipped";
+import {Block} from "../styledComponents/Block";
 
 interface Props{
     word: WordInfo
@@ -9,17 +14,26 @@ interface Props{
 
 export function WordDetails(props: Props){
     return(
-        <FullBox>
-            <InfoLabel>Word - {props.word.match}</InfoLabel>
+        <Block>
+            <QuarterBox>
+                <InfoLabel>Word - {props.word.match}</InfoLabel>
+            </QuarterBox>
 
-            <InfoLabel>Line: </InfoLabel>
-            <AutoChip label={props.word.line}/>
+            <QuarterBox>
+                <InfoLabel>Line: </InfoLabel>
+                <Chipped label={props.word.line}/>
+            </QuarterBox>
 
-            <InfoLabel>Position: </InfoLabel>
-            <AutoChip label={props.word.index}/>
+            <QuarterBox>
+                <InfoLabel>Position: </InfoLabel>
+                <Chipped label={props.word.index}/>
+            </QuarterBox>
 
-            <InfoLabel>Context: </InfoLabel>
-            <AutoChip label={"..." + props.word.context + "..."}/>
-        </FullBox>
+            <HalfBox>
+                <InfoLabel>Context: </InfoLabel>
+                <Chipped label={"..." + props.word.context + "..."}/>
+            </HalfBox>
+
+        </Block>
     )
 }

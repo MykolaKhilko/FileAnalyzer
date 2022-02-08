@@ -22,10 +22,10 @@ export function FileDetails(props: Props){
                 <AutoChip label={props.file.path}/>
             </HalfBox>
 
-            <List>
+            <List sx={{width: "100%"}}>
                 {props.file.wordInfo.map((word, index) => {
                     return (
-                        <ListItem key={index}>
+                        <ListItem key={index} sx={{width: "90%"}}>
                             <WordDetails word={word}/>
                         </ListItem>
                     )

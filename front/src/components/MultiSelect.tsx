@@ -38,7 +38,7 @@ export default function MultiSelect({onChange, label, disabled, values, options}
                     {...params}
                     variant="standard"
                     label={label}
-                    sx={{color: "white", input: {color: 'white' }, "& .MuiFormLabel-root": { color: "orange" }}}
+                    sx={{color: "white", input: {color: 'white' }, "& .MuiFormLabel-root": { color: "white" }}}
                 />
             )}
             options={options ?? []}

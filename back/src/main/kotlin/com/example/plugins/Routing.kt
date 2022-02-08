@@ -45,13 +45,17 @@ fun Application.configureRouting() {
             call.respond(HttpStatusCode.OK)
         }
         get("/api/fetch-list"){
-            call.respond(HttpStatusCode.OK)
+            call.respond(Db.toTypedArray())
         }
         get("/api/fetch-progress"){
             val id = call.request.queryParameters["id"]!!.toLong()
             val worker = workers.getValue(id)
 
-            call.respond(worker.getProgress())
+            val progress = worker.getProgress()
+            call.respond(progress)
+
+            if (progress.finished)
+                Db.add(worker.getProcessInfo())
         }
         get("api/get-process-details"){
             val id = call.request.queryParameters["id"]!!.toLong()

@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {ProcessSettings, ProcessProgress, ProcessInfo, FileInfo} from "../Types";
 import {ProcessList} from "./doneProcess/ProcessList";
 import {ProcessSettingsForm} from "./ProcessSettingsForm";
@@ -11,6 +11,7 @@ import {Div} from "./styledComponents/Div";
 import {Block} from "./styledComponents/Block";
 
 export default function Layout() {
+   // useEffect(() => componentDidMount())
 
     const [settings, setSettings] = useState<ProcessSettings[]>([])
     const [processesList, setProcessesList] = useState<ProcessInfo[]>([])
@@ -51,8 +52,12 @@ export default function Layout() {
         post(url, id).then(r => {})
     }
 
-    function componentDidMount() {
+    async function componentDidMount() {
         const url = "fetch-list"
+
+        const data =  await get(url) as ProcessInfo[];
+
+        setProcessesList(data)
     }
 
     return (
