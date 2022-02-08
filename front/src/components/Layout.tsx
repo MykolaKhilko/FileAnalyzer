@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useEffect, useLayoutEffect, useState} from "react";
 import {ProcessSettings, ProcessProgress, ProcessInfo, FileInfo} from "../Types";
 import {ProcessList} from "./doneProcess/ProcessList";
 import {ProcessSettingsForm} from "./ProcessSettingsForm";
@@ -11,26 +11,28 @@ import {Div} from "./styledComponents/Div";
 import {Block} from "./styledComponents/Block";
 
 export default function Layout() {
-   // useEffect(() => componentDidMount())
 
+
+    const [needFetch, setNeedFetch] = useState<boolean>(true)
     const [settings, setSettings] = useState<ProcessSettings[]>([])
     const [processesList, setProcessesList] = useState<ProcessInfo[]>([])
-    const [processItem, setProcessItem] = useState<ProcessProgress>()
+    //const [processItem, setProcessItem] = useState<ProcessProgress>()
     const [activeProcesses, setNew] = useState<ProcessSettings[]>([])
     const [finished, setFinished] = useState(false)
 
+    useLayoutEffect(() => {
+        if (needFetch){
+            fetchDone()
+            fetchActive()
+            setNeedFetch(false)
+        }
+    })
+
     function handleProcessCreated(item: ProcessSettings) {
         const url = "start-process"
+        post(url, item)
 
-        post(url, item).then(response => {
-                if (response.status == 200) {
-                    setNew(prev => [...prev, item])
-                    //setStart(true)
-                }
-            }
-        )
         setNew(prev => [...prev, item])
-        //setStart(true)
         return setSettings(prev => [...prev, item]);
     }
 
@@ -48,16 +50,21 @@ export default function Layout() {
         setProcessesList(list)
 
         const url = "delete-process"
-
         post(url, id).then(r => {})
     }
 
-    async function componentDidMount() {
+    async function fetchDone() {
         const url = "fetch-list"
-
         const data =  await get(url) as ProcessInfo[];
 
         setProcessesList(data)
+    }
+
+    async function fetchActive(){
+        const url = "fetch-active-list"
+        const data =  await get(url) as ProcessSettings[];
+
+        setNew(data)
     }
 
     return (

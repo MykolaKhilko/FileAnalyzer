@@ -14,7 +14,8 @@ import java.util.concurrent.ExecutorService
 
 fun Application.configureRouting() {
     val workers = mutableMapOf<Long, ProcessWorker>()
-    val Db = mutableListOf<ProcessInfo>()
+    val DbOfActive = mutableMapOf<Long, ProcessSettings>()
+    val Db = mutableMapOf<Long, ProcessInfo>()
 
     routing {
         get("/api") {
@@ -26,7 +27,7 @@ fun Application.configureRouting() {
             val settings = ProcessSettings(path, null, null, keys, 1)
 
             val worker = ProcessWorker(settings)
-            Db.add(worker.startNewProcess())
+            //Db.add(worker.startNewProcess())
         }
         post<ProcessSettings>("/api/start-process") { settings ->
             val worker = ProcessWorker(settings)
@@ -43,9 +44,14 @@ fun Application.configureRouting() {
             }
 
             call.respond(HttpStatusCode.OK)
+
+            DbOfActive.put(settings.id, settings)
         }
         get("/api/fetch-list"){
-            call.respond(Db.toTypedArray())
+            call.respond(Db.values.toTypedArray())
+        }
+        get("/api/fetch-active-list"){
+            call.respond(DbOfActive.values.toTypedArray())
         }
         get("/api/fetch-progress"){
             val id = call.request.queryParameters["id"]!!.toLong()
@@ -55,7 +61,8 @@ fun Application.configureRouting() {
             call.respond(progress)
 
             if (progress.finished)
-                Db.add(worker.getProcessInfo())
+                DbOfActive.remove(id)
+                Db.put(id, worker.getProcessInfo())
         }
         get("api/get-process-details"){
             val id = call.request.queryParameters["id"]!!.toLong()
@@ -65,6 +72,7 @@ fun Application.configureRouting() {
         }
         post<Long>("/api/delete-process"){ id ->
             workers.remove(id)
+            Db.remove(id)
 
             call.respond(HttpStatusCode.OK)
         }
