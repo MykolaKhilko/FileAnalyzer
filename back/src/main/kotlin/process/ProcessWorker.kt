@@ -9,13 +9,13 @@ import kotlin.io.path.Path
 class ProcessWorker(private val settings: ProcessSettings) {
 
     private var filesProcessed: Int = 0
-    var filesToProcess: Int = 0
-    var timeStart: Long = 0
-    var timeFinish: Long = 0
-    var fileReader = FileReader(settings.keywords)
-    var finished = false
+    private var filesToProcess: Int = 0
+    private var timeStart: Long = 0
+    private var timeFinish: Long = 0
+    private var fileReader = FileReader(settings.keywords)
+    private var finished = false
 
-    var results = mutableListOf<FileInfo>()
+    private var results = mutableListOf<FileInfo>()
 
     fun validateSettings(): String{
         return if (Files.exists(Path(settings.path)))
@@ -33,7 +33,9 @@ class ProcessWorker(private val settings: ProcessSettings) {
         files.forEachIndexed{index, file ->
             results.add(fileReader.processFile(file))
             filesProcessed++
-            Thread.sleep(500)
+
+            // use to debug
+            //Thread.sleep(500)
         }
 
         finished = true

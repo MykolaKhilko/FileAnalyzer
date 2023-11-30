@@ -74,7 +74,10 @@ export function ProcessSettingsForm(props: Props) {
                 />
                 <MultiSelect label="Extensions of files"
                              disabled={blocked}
-                             options={[".txt"]}
+                             options={[".txt",
+                                 //".pdf", ".rtf", ".dox",
+                                 //".docx", ".xls", ".xlsx", ".odt", "ods"
+                             ]}
                              values={extensions}
                              onChange={setExts}
                 />

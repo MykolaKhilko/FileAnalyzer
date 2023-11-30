@@ -4,7 +4,7 @@ import java.io.File
 import java.util.*
 import kotlin.math.min
 
-class FileReader(val keywords: List<String>) {
+class FileReader(private val keywords: List<String>) {
 
     var found: Int = 0
 
@@ -21,7 +21,10 @@ class FileReader(val keywords: List<String>) {
                     word.trim(*Constants.delimiters.toCharArray())
                     keywords.forEach{ keyword ->
                         if (word.contains(keyword)) {
-                            val contexts = text.subList(textIndex - min(2, textIndex), textIndex + min(3, text.size - textIndex)).toString()
+                            val contexts = text
+                                .subList(textIndex - min(2, textIndex),
+                                    textIndex + min(3, text.size - textIndex))
+                                .toString()
                             wordInfos.add(WordInfo(lineIndex, textIndex, word, contexts))
                             found += 1
                         }
